@@ -48,16 +48,12 @@ We use our own module repository. We welcome developers to submit modules to our
 
 Notice: These community groups don't accept any bug report, please use [Get help](#get-help) to report.
 
-## Translation Contributing
-
-You can contribute translation [here](https://crowdin.com/project/lsposed_jingmatrix).
-
 ## Credits 
 
 - [Magisk](https://github.com/topjohnwu/Magisk/): makes all these possible
 - [XposedBridge](https://github.com/rovo89/XposedBridge): the OG Xposed framework APIs
-- [Dobby](https://github.com/JingMatrix/Dobby): fallback of PLT hook and inline hooker for `native_api` implement
-- [LSPlant](https://github.com/JingMatrix/LSPlant): the core ART hooking framework
+- [Dobby](https://github.com/luckyzyx/Dobby): fallback of PLT hook and inline hooker for `native_api` implement
+- [LSPlant](https://github.com/luckyzyx/LSPlant): the core ART hooking framework
 - [EdXposed](https://github.com/ElderDrivers/EdXposed): fork source
 - [xz-embedded](https://github.com/tukaani-project/xz-embedded): decompress `.gnu_debugdata` header section of stripped `libart.so`
 - ~~[Riru](https://github.com/RikkaApps/Riru): provides a way to inject code into zygote process~~
