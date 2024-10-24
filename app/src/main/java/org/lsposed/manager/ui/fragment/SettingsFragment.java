@@ -353,21 +353,12 @@ public class SettingsFragment extends BaseFragment {
 
             Preference translation = findPreference("translation");
             if (translation != null) {
-                translation.setOnPreferenceClickListener(preference -> {
-                    NavUtil.startURL(requireActivity(), "https://crowdin.com/project/lsposed_jingmatrix");
-                    return true;
-                });
-                translation.setSummary(getString(R.string.settings_translation_summary, getString(R.string.app_name)));
+                translation.setVisible(false);
             }
 
             Preference translation_contributors = findPreference("translation_contributors");
             if (translation_contributors != null) {
-                var translators = HtmlCompat.fromHtml(getString(R.string.translators), HtmlCompat.FROM_HTML_MODE_LEGACY);
-                if (translators.toString().equals("null")) {
-                    translation_contributors.setVisible(false);
-                } else {
-                    translation_contributors.setSummary(translators);
-                }
+                translation_contributors.setVisible(false);
             }
             SimpleMenuPreference channel = findPreference("update_channel");
             if (channel != null) {
