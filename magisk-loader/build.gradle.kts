@@ -186,7 +186,7 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
                 "versionName" to "v$verName",
                 "versionCode" to verCode,
                 "authorList" to authors,
-                "updateJson" to "https://raw.githubusercontent.com/JingMatrix/LSPosed/master/magisk-loader/update/${flavorLowered}.json",
+                "updateJson" to "https://raw.githubusercontent.com/luckyzyx/LSPosed/master/magisk-loader/update/${flavorLowered}.json",
                 "requirement" to when (flavorLowered) {
                     "zygisk" -> "Requires Magisk 26.0+ and Zygisk enabled"
                     else -> "No further requirements"

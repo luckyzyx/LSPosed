@@ -18,4 +18,4 @@
 1. Use Zygisk API v4
 2. Remove Riru module support
 
-**Full Changelog**: [v1.10.0...v1.10.1](https://github.com/JingMatrix/LSPosed/compare/v1.10.0...v1.10.1)
+**Full Changelog**: [v1.10.0...v1.10.1](https://github.com/luckyzyx/LSPosed/compare/v1.10.0...v1.10.1)
