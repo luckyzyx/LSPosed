@@ -23,16 +23,15 @@
 
 #pragma once
 
-#include "../api/zygisk.hpp"
+#include "../src/native_api.h"
 #include "context.h"
+#include "elf_util.h"
+#include "symbol_cache.h"
 
 namespace lspd {
 class MagiskLoader : public Context {
 public:
-    inline static void Init(zygisk::Api *api) {
-        instance_ = std::make_unique<MagiskLoader>();
-        GetInstance()->InitializeZygiskApi(api);
-    }
+    inline static void Init() { instance_ = std::make_unique<MagiskLoader>(); }
 
     inline static MagiskLoader *GetInstance() {
         return static_cast<MagiskLoader *>(instance_.get());
@@ -43,9 +42,9 @@ public:
 
     void OnNativeForkAndSpecializePost(JNIEnv *env, jstring nice_name, jstring app_dir);
 
-    void OnNativeForkSystemServerPost(JNIEnv *env);
-
     void OnNativeForkSystemServerPre(JNIEnv *env);
+
+    void OnNativeForkSystemServerPost(JNIEnv *env);
 
 protected:
     void LoadDex(JNIEnv *env, PreloadedDex &&dex) override;
@@ -54,39 +53,18 @@ protected:
 
 private:
     bool skip_ = false;
-    lsplant::InitInfo initInfo;
+    const lsplant::InitInfo initInfo = lsplant::InitInfo{
+        .inline_hooker =
+            [](auto t, auto r) {
+                void *bk = nullptr;
+                return HookInline(t, r, &bk) == 0 ? bk : nullptr;
+            },
+        .inline_unhooker = [](auto t) { return UnhookInline(t) == 0; },
+        .art_symbol_resolver = [](auto symbol) { return GetArt()->getSymbAddress(symbol); },
+        .art_symbol_prefix_resolver =
+            [](auto symbol) { return GetArt()->getSymbPrefixFirstAddress(symbol); },
+    };
 
-    void InitializeZygiskApi(zygisk::Api *api);
     static void setAllowUnload(bool unload);
-};
-
-struct MapInfo {
-    /// \brief The start address of the memory region.
-    uintptr_t start;
-    /// \brief The end address of the memory region.
-    uintptr_t end;
-    /// \brief The permissions of the memory region. This is a bit mask of the following values:
-    /// - PROT_READ
-    /// - PROT_WRITE
-    /// - PROT_EXEC
-    uint8_t perms;
-    /// \brief Whether the memory region is private.
-    bool is_private;
-    /// \brief The offset of the memory region.
-    uintptr_t offset;
-    /// \brief The device number of the memory region.
-    /// Major can be obtained by #major()
-    /// Minor can be obtained by #minor()
-    dev_t dev;
-    /// \brief The inode number of the memory region.
-    ino_t inode;
-    /// \brief The path of the memory region.
-    std::string path;
-
-    /// \brief Scans /proc/self/maps and returns a list of \ref MapInfo entries.
-    /// This is useful to find out the inode of the library to hook.
-    /// \param[in] pid The process id to scan. This is "self" by default.
-    /// \return A list of \ref MapInfo entries.
-    static std::vector<MapInfo> Scan(std::string_view pid = "self");
 };
 }  // namespace lspd

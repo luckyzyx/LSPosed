@@ -23,10 +23,7 @@
 #include <sys/socket.h>
 
 #include "config_impl.h"
-#include "loader.h"
-#include "logging.h"
 #include "magisk_loader.h"
-#include "symbol_cache.h"
 #include "zygisk.hpp"
 
 namespace lspd {
@@ -40,7 +37,7 @@ class ZygiskModule : public zygisk::ModuleBase {
     void onLoad(zygisk::Api *api, JNIEnv *env) override {
         env_ = env;
         api_ = api;
-        MagiskLoader::Init(api);
+        MagiskLoader::Init();
         ConfigImpl::Init();
     }
 
